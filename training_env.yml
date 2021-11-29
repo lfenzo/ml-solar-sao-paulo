@@ -1,0 +1,13 @@
+name: ml-solar-training
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - numpy
+  - tqdm
+  - pyarrow
+  - xgboost
+  - pandas
+  - scikit-learn
+  - joblib
+  - haversine

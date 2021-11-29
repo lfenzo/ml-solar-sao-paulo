@@ -1,0 +1,26 @@
+# data files (pickle, numpy arrays, csvs and feather files)
+*.pkl
+*.csv
+*.npy
+*.ftr
+
+# scikit-learn transformers
+*.dat
+
+# data directories (including the ones automatically downloaded)
+inmet_brasil/
+inmet_sao_paulo/
+zips/
+
+# processed station directories
+merged_stations/*/
+mixer/original/
+mixer/imputed/
+
+# generated images inside 'visuals/'
+visuals/pdf/
+visuals/pgf/
+visuals/jpeg/
+
+# generated python cache
+__pycache__/
