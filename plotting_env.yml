@@ -1,0 +1,13 @@
+name: ml-solar-plotting
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - matplotlib
+  - geopandas
+  - numpy
+  - tqdm
+  - pyarrow
+  - scikit-learn
+  - joblib
+  - haversine
