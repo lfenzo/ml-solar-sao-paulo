@@ -2,7 +2,7 @@
 
 This repository contains the implementation of the scientific project *Multi-ensemble Machine Learning based approach for Short-term Solar Radiation Forecasting*.
 
-The objective of this project was to emply Machine Leaning techniques in order to obtain models capable of forecasting solar radiation 60 minutes in the future from meteorological records such as temperature, humidity, precipitation, etc, obtained in meteorological stations in the State of São Pualo, Brazil. The top-left image below depicts the data collection sites in the area of study.
+The objective of this project was to employ Machine Leaning techniques in order to obtain models capable of forecasting solar radiation 60 minutes in the future from meteorological records such as temperature, humidity, precipitation, etc, obtained in meteorological stations in the State of São Paulo, Brazil. The top-left image below depicts the data collection sites in the area of study.
 
 <table>
     <tr>
@@ -15,7 +15,7 @@ The objective of this project was to emply Machine Leaning techniques in order t
     </tr>
 </table>
 
-The proposed objctive was devided in 2 procedures:
+The proposed objective was divided in 2 procedures:
 
 - Obtain site-specific models trained and tuned with historical meteorological data collected in each one of the collection sites in the area of study. Predictions are site-specific to each collection sites.
 
@@ -28,11 +28,11 @@ The proposed objctive was devided in 2 procedures:
     </tr>
 </table>
 
-In order to assess the precidtion produced by the generalization model a variation of Inverse Distance Weighting was introduced taking into account not only the distance from the reference prediction sites the predicted site but also the errors of the estimators which produced the predictions to be interpolated. The predictions of both site-specific models and the generalization model were also compared to the CPRG hourly radiation prediction empirical model in terms of performance of the predictions.
+In order to assess the predictions produced by the generalization model a variation of Inverse Distance Weighting was introduced taking into account not only the distance from the reference prediction sites the predicted site but also the errors of the estimators which produced the predictions to be interpolated. The predictions of both site-specific models and the generalization model were also compared to the CPRG hourly radiation prediction empirical model in terms of performance of the predictions.
 
 ## Approach
 
-The data collected are preprocessed on a per station configuration. Among the employed prepocessing procedures this preprocessing pipeline features the automated download of all data used during training of the models and an imputation method to artificially reconstruct part of the missing data in the obtained datasets.
+The data collected are preprocessed on a per station configuration. Among the employed procedures this preprocessing pipeline features the automated download of all data used during training of the models and an imputation method to artificially reconstruct part of the missing data in the obtained datasets.
 
 The data pipeline is composed of the following procedures:
 
@@ -43,7 +43,7 @@ The data pipeline is composed of the following procedures:
 
 ### Data Imputation
 
-The imputation was performed for every feature in every station using Inverse Distance Weighting. For a imputed station A, a set of neaby stations (B, C and D) is obtained and for every timestamp in A available values in B, C and D are interpolated in order to artificially reconstruct the missing values of A.
+The imputation was performed for every feature in every station using Inverse Distance Weighting. For an imputed station A, a set of nearby stations (B, C and D) is obtained and for every timestamp in A available values in B, C and D are interpolated in order to artificially reconstruct the missing values of A.
 
 ![](./img/imputacao.png)
 
@@ -51,7 +51,7 @@ This process was conducted adopting a minimum of 3 valid values to interpolate, 
 
 ### Model Training and Tuning
 
-The Machine Learning algorthms used to train the estimators are shown below. For each one of the training algorithms hyperparameters search routines were conducted in order to obtain the best models from que selected hyperparameter search space in each algorithm.
+The Machine Learning algorithms used to train the estimators are shown below. For each one of the training algorithms hyperparameters search routines were conducted in order to obtain the best models from the selected hyperparameter search space in each algorithm.
 
 1. Multi-layer Perceptron (Dense Neural Network)
 1. Support Vector Machine 
@@ -61,7 +61,7 @@ The Machine Learning algorthms used to train the estimators are shown below. For
 1. Stacking Regressor
 
 The training pipeline was designed to be fully automated and fault-tolerant: in case of the interruption of the training process by any reason, the next run of the script `training_pipeline.py` is able to detect the last fitted estimator and start the training process where is was stopped.
-Once all the training and tuning processes are complete, the generalized prediction in a given site is squematically depicted below:
+Once all the training and tuning processes are complete, the generalized prediction in a given site is schematically depicted below:
 
 ![](./img/predicton-summary.png)
 
@@ -73,20 +73,20 @@ The content of this repository in `src/` is organized as follows
 
 | Directory/File | Description |
 | -------------- | ----------- |
-| `data/` | Directory containing all data proprocessing for the site-specific models. Its procedures range from automated daownload and extraction routines site-specific data filtering and normalization.|
-| `composition/` | Directory containing the definition and implmentation of the ML-based generalization model. |
+| `data/` | Directory containing all data preprocessing for the site-specific models. Its procedures range from automated download and extraction routines site-specific data filtering and normalization.|
+| `composition/` | Directory containing the definition and implementation of the ML-based generalization model. |
 | `params_grids/` | Directory containing the hyperparameter search grids stored in `.pkl` as well as the script to generate them.|
 | `empirical_vs_ml/` | Directory containing implementation of the CRPG empirical model as well as its predictions and comparisons with the predictions performed by the site-specific models and the generalization model.|
-| `mixer/` | In the context of the data imputation, the `mixer/` directory contains scripts the select the best estimators based on the data used durint their training *i.e.* the estimators training with original and imputed data are compared and the best estimators are selected. This allows not only the iputation assessment but also provides the best performance when possible from the data.|
+| `mixer/` | In the context of the data imputation, the `mixer/` directory contains scripts the select the best estimators based on the data used during their training *i.e.* the estimators training with original and imputed data are compared and the best estimators are selected. This allows not only the imputation assessment but also provides the best performance when possible from the data.|
 | `merged_stations/` | Directory containing all training sites separated by station each one with the respective datasets for training, testing as well as the fitted estimators and their predictions, scaler and transformer objects (*e.g.* PCA transformers).|
-| `visuals/` | Directory containing script for data visualization regarding the performance reposrts of the produced estimators. Images such as scatter plots, maps and boxplots are produced from the information gathered from the performance evaluation scripts. |
+| `visuals/` | Directory containing script for data visualization regarding the performance reports of the produced estimators. Images such as scatter plots, maps and boxplots are produced from the information gathered from the performance evaluation scripts. |
 | `training_pipeline.py` | Automates the process of training, tuning and performance evaluation. This script is responsible for running `scikit_gym.py`, `performance_metrics.py` and `consolidate_results` with the appropriate CLI arguments. |
 | `scikit_gym.py` | Automates routines to train and tune all estimators in each one of the data collection sites.  |
 | `performance_metrics.py` | Automates performance evaluation for all the models fitted in each one of the training sites. For every prediction site a small performance report is produced and used as input in other scripts.
-| `consolidate_results.py` | Evaluates the performance of the best models using as input the site-spe3cific performance report files produced by `performance_metrics.py`.|
+| `consolidate_results.py` | Evaluates the performance of the best models using as input the site-specific performance report files produced by `performance_metrics.py`.|
 | `idw.py` | Contains the definition and implementation of the Inverse Distance Weighting interpolation used in both data imputing (in the data preprocessing pipeline) and the IDW-variant generalization model.|
-| `tf_gym.py` | Depracted code. It was used when the Keras/Tensorflow framework was considered for the project, however it is no longer functional and should not be executed.|
-| `wakeup.py` | Depracted code. It was used when the Dask distributed framework was considered for the project, however it is no longer functional and should not be executed.|
+| `tf_gym.py` | Deprecated code. It was used when the Keras/Tensorflow framework was considered for the project, however it is no longer functional and should not be executed.|
+| `wakeup.py` | Deprecated code. It was used when the Dask distributed framework was considered for the project, however it is no longer functional and should not be executed.|
 
 ## Dependencies
 
@@ -103,9 +103,9 @@ This project was developed with Python 3 (ver 3.8) relying on the following pack
 Note that two environment files are provided in the repository for quick setup with Conda: 
 
 - `training_env.yml`:  with packages for used in training processes (used in virtually all script except the ones in `visuals/`).
-- `plotting_env.yml`: with packages used mostly in plottings scripts. The biggest caveat is GeoPandas which has odd (and possibly breaking) dependencies when it is installed in the same environment as the training packages. Used only in `visuals/`.
+- `plotting_env.yml`: with packages used mostly in plotting scripts. The biggest caveat is GeoPandas which has odd (and possibly breaking) dependencies when it is installed in the same environment as the training packages. Used only in `visuals/`.
 
-In order to install the virtual fromt the `.yml` files run:
+In order to install the virtual from the `.yml` files run:
 
 ```
 conda env create -f <file>.yml
