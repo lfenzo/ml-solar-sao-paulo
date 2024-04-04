@@ -1,6 +1,5 @@
 # data files (pickle, numpy arrays, csvs and feather files)
 *.pkl
-*.csv
 *.npy
 *.ftr
 
