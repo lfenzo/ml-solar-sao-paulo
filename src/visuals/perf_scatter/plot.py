@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 
@@ -14,13 +15,8 @@ def scatter_hist(x, y, ax, ax_histx, ax_histy, color):
     ax_histx.tick_params(axis="x", labelbottom=False)
     ax_histy.tick_params(axis="y", labelleft=False)
 
-    # now determine nice limits by hand:
-    xymax = max(np.max(np.abs(x)), np.max(np.abs(y)))
-    up_bins = set_bins(width=5, xymax=xymax)
-    right_bins = set_bins(width=15, xymax=xymax)
-
-    ax_histx.hist(x, bins=up_bins, color=color, edgecolor='k', linewidth=0.5)
-    ax_histy.hist(y, bins=right_bins, orientation='horizontal', color=color, edgecolor='k', linewidth=0.5)
+    sns.kdeplot(x=x, ax=ax_histx, color=color, fill=True, linewidth=0.25, edgecolor='k')
+    sns.kdeplot(y=y, ax=ax_histy, color=color, fill=True, linewidth=0.25, edgecolor='k')
 
 
 if __name__ == "__main__":
@@ -33,7 +29,7 @@ if __name__ == "__main__":
     interpolated = df[interp_mask].copy()
     original = df[~interp_mask].copy()
 
-    fig = plt.figure(figsize=(7, 7), dpi=200)
+    fig = plt.figure(figsize=(6, 6), dpi=200)
 
     # Add a gridspec with two rows and two columns and a ratio of 1 to 4 between
     # the size of the marginal axes and the main axes in both directions.
@@ -46,28 +42,37 @@ if __name__ == "__main__":
     ax_histx = fig.add_subplot(gs[0, 0], sharex=ax)
     ax_histy = fig.add_subplot(gs[1, 1], sharey=ax)
     # Draw the scatter plot and marginals.
-    scatter_hist(df['train'], df['mae'], ax, ax_histx, ax_histy, color='darkgray')
+    scatter_hist(df['train'], df['mae'], ax, ax_histx, ax_histy, color='dimgray')
+    ax.grid()
+    sns.kdeplot(
+        x=df['train'],
+        y=df['mae'],
+        ax=ax,
+        fill=True,
+        levels=8,
+        alpha=0.4,
+        thresh=0,
+        cmap='binary',
+    )
     ax.scatter(
         original['train'], original['mae'],
         label='Original data',
         edgecolors='k',
         linewidths=0.5,
-        s=40,
+        s=100,
     )
     ax.scatter(
         interpolated['train'], interpolated['mae'],
-        marker='D',
         label='IDW-imputed',
         edgecolors='k',
         linewidths=0.5,
-        s=40,
+        s=100,
     )
 
-    ax.set_yticks(np.arange(150, 315, 15))
-    ax.set_ylim(159, 300)
+    ax.set_yticks(np.arange(150, 365, 15))
+    ax.set_ylim(150, 330)
     ax.set_xticks(np.arange(20, 70, 5))
     ax.set_xlim(20, 70)
-    ax.grid()
     ax.set_ylabel("MAE (kJ/m²)")
     ax.set_xlabel("Number of training samples ($\\times$1000)")
     ax.legend(loc='lower right')
